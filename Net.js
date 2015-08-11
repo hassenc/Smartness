@@ -47,10 +47,36 @@ Layer.prototype.forward = function(input) {
 var Network = function(sizes) {
     this.sizes = sizes;
     this.layers = [];
+    this.allWeights =[];
 
     for (var layerIndex = 0; layerIndex < sizes.length; layerIndex++) {
         this.layers.push(new Layer(layerIndex, this));
     }
+}
+
+
+Network.prototype.getWeights = function() {
+    this.allWeights =[];
+    for (var i = 1; i < this.layers.length; i++) {
+        for (var j = 0; j < this.layers[i].nodes.length; j++) {
+            for (var k = 0; k < this.layers[i].nodes[j].weights.length; k++) {
+            this.allWeights.push(this.layers[i].nodes[j].weights[k])
+            };
+        };
+    };
+    return this.allWeights;
+}
+
+Network.prototype.setWeights = function(weights) {
+    var t = 0;
+    for (var i = 1; i < this.layers.length; i++) {
+        for (var j = 0; j < this.layers[i].nodes.length; j++) {
+            for (var k = 0; k < this.layers[i].nodes[j].weights.length; k++) {
+            this.layers[i].nodes[j].weights[k] = weights[t];
+            t++;
+            };
+        };
+    };
 }
 
 Network.prototype.forward = function(input, target) {
